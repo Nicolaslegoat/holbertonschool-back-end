@@ -44,7 +44,7 @@ def to_do(employee_ID):
     todos_response = requests.get(todos_url)
 
     # converting into json format
-    todos_data = todos_response.json()
+    todos_data = todos_response.get(todos_url)
 
     # verifying if request was a success
     if todos_response.status_code == 200:
