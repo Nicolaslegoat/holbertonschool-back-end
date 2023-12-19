@@ -11,45 +11,45 @@ import sys
 def todo_list(employee_id):
     """ Fetch and display TODO list progress for a given employee. """
 
-    url = "https://jsonplaceholder.typicode.com"
-    user_url = f"{base_url}/users/{employee_id}"
-    todos_url = f"{base_url}/todos?userId={employee_id}"
+    url = 'https://jsonplaceholder.typicode.com'
 
-    try:
-        """Make requests to the API to fetch user and todo data"""
-        user_response = requests.get(user_url)
-        todos_response = requests.get(todos_url)
+    # url for employess and todos
+    employee_url = f"{url}/users/{employee_ID}"
+    todos_url = f"{url}/todos?userId={employee_ID}"
 
-        """Convert responses to JSON format"""
-        user_data = user_response.json()
-        todos_data = todos_response.json()
+    # request to get employee url
+    employee_response = requests.get(employee_url)
 
-        """Extract user information"""
-        employee_name = user_data.get("name")
+    # converting to json format
+    employee_data = employee_response.json()
 
-        """Calculate total tasks"""
+    # verifying that request is a success
+    if employee_response.status_code == 200:
+        # get the employee's name
+        employee_name = employee_data.get('name')
+
+    # getting todos url.
+    todos_response = requests.get(todos_url)
+
+    # converting into json format
+    todos_data = todos_response.json()
+
+    # verifying if request was a success
+    if todos_response.status_code == 200:
+        # gettin total number of tasks in todos
         total_tasks = len(todos_data)
+        # variable to be incremented if task is completed
+        completed_tasks = 0
+    # a loop that increment completed_tasks
+    for task in todos_data:
+        completed_tasks += task['completed']
 
-        """Filter completed tasks using a for loop"""
-        completed_tasks = []
-        for task in todos_data:
-            if task.get("completed"):
-                completed_tasks.append(task)
-        """Calculate the number of completed tasks"""
-        num_completed_tasks = len(completed_tasks)
+    print("Employee {} is done with tasks({}/{}):"
+          .format(employee_name, completed_tasks, total_tasks))
 
-        """Print the progress of the employee's TODO list"""
-        print("Employee {} is done with tasks({}/{}):"
-              .format(employee_name, num_completed_tasks, total_tasks))
-
-        """Print the titles of completed tasks"""
-        for task in completed_tasks:
-            print("\t {}".format(task.get('title')))
-
-        """Handle exceptionsand print an error message"""
-    except requests.exceptions.RequestException as e:
-        print("Error fetching data: {}".format(e))
-        sys.exit(1)
+    for task in todos_data:
+        if task['completed']:
+            print("\t {}".format(task['title']))
 
 
 # Execute the script if it is the main entry point.
@@ -63,4 +63,4 @@ if __name__ == "__main__":
     # Convert the command-line argument to an integer
     employee_id = int(sys.argv[1])
     # Call the fetch_todo_list function
-    fetch_todo_list(employee_id)
+    todo_list(employee_id)
