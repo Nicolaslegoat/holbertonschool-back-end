@@ -8,48 +8,46 @@ import requests
 import sys
 
 
-def todo_list(employee_id):
+def todo_list(employee_ID):
     """ Fetch and display TODO list progress for a given employee. """
 
-    base_url = "https://jsonplaceholder.typicode.com"
+    url = "https://jsonplaceholder.typicode.com"
     user_url = f"{base_url}/users/{employee_id}"
     todos_url = f"{base_url}/todos?userId={employee_id}"
 
-    try:
-        """Make requests to the API to fetch user and todo data"""
-        user_response = requests.get(user_url)
-        todos_response = requests.get(todos_url)
+    # request to get employee url
+    employee_response = requests.get(user_url)
 
-        """Convert responses to JSON format"""
-        user_data = user_response.json()
-        todos_data = todos_response.json()
+    # converting to json format
+    employee_data = employee_response.json()
 
-        """Extract user information"""
-        employee_name = user_data.get("name")
+    # verifying that request is a success
+    if employee_response.status_code == 200:
+        # get the employee's name
+        employee_name = employee_data.get('name')
 
-        """Calculate total tasks"""
+    # getting todos url.
+    todos_response = requests.get(todos_url)
+
+    # converting into json format
+    todos_data = todos_response.json()
+
+    # verifying if request was a success
+    if todos_response.status_code == 200:
+        # gettin total number of tasks in todos
         total_tasks = len(todos_data)
+        # variable to be incremented if task is completed
+        completed_tasks = 0
+    # a loop that increment completed_tasks
+    for task in todos_data:
+        completed_tasks += task['completed']
 
-        """Filter completed tasks using a for loop"""
-        completed_tasks = []
-        for task in todos_data:
-            if task.get("completed"):
-                completed_tasks.append(task)
-        """Calculate the number of completed tasks"""
-        num_completed_tasks = len(completed_tasks)
+    print("Employee {} is done with tasks({}/{}):"
+          .format(employee_name, completed_tasks, total_tasks))
 
-        """Print the progress of the employee's TODO list"""
-        print("Employee {} is done with tasks({}/{}):"
-              .format(employee_name, num_completed_tasks, total_tasks))
-
-        """Print the titles of completed tasks"""
-        for task in completed_tasks:
-            print("\t {}".format(task.get('title')))
-
-        """Handle exceptionsand print an error message"""
-    except requests.exceptions.RequestException as e:
-        print("Error fetching data: {}".format(e))
-        sys.exit(1)
+    for task in todos_data:
+        if task['completed']:
+            print("\t {}".format(task['title']))
 
 
 """Execute the script if it is the main entry point"""
@@ -57,7 +55,7 @@ if __name__ == "__main__":
 
     """Check if the correct number of command line argument is provided"""
     if len(sys.argv) != 2:
-        print("Usage: python3 0-gather_data_from_an_API.py <employee_id>")
+        print("error")
         sys.exit(1)
 
     """Convert the command line argument to an integer"""
