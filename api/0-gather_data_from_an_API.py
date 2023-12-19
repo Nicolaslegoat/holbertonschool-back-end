@@ -8,7 +8,7 @@ import requests
 import sys
 
 
-def todo_list(employee_id):
+def todo_list(employee_ID):
     """ Fetch and display TODO list progress for a given employee. """
 
     url = 'https://jsonplaceholder.typicode.com'
