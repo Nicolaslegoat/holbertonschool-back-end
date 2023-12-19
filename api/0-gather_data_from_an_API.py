@@ -10,8 +10,8 @@ import sys
 def todo(employee_id):
     """ Fetch and display TODO list progress for a given employee. """
 
-    base_url= "https://jsonplaceholder.typicode.com"
-    user_url = f"{base_url}/user/{employee_id}"
+    base_url = "https://jsonplaceholder.typicode.com"
+    user_url = f"{base_url}/users/{employee_id}"
     todos_url = f"{base_url}/todos?userId={employee_id}"
 
     try:
