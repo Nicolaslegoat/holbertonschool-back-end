@@ -14,15 +14,6 @@ def todo_list(employee_ID):
     """
     Retrieve employee information and TODO
     list progress based on the employee ID.
-
-    Args:
-        employee_ID (int): The ID of the employee.
-
-    Returns:
-        None
-
-    Prints:
-        Displays the employee's TODO list progress.
     """
     url = 'https://jsonplaceholder.typicode.com'
 
@@ -56,14 +47,14 @@ def todo_list(employee_ID):
 
         csv_path = f"{employee_ID}.csv"
         with open(csv_path, 'w', newline='') as csvfile:
-            fieldname = [
+            fieldnames = [
                 'USER_ID',
                 'USERNAME',
                 'TASK_COMPLETED_STATUS',
                 'TASK_TITLE'
                 ]
             writer = csv.DictWriter(csvfile,
-                                    fieldname=fieldname,
+                                    fieldnames=fieldnames,
                                     quoting=csv.QUOTE_ALL)
 
             for task in todos_data:
