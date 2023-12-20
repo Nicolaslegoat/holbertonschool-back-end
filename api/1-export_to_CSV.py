@@ -67,7 +67,7 @@ def todo_list(employee_ID):
                                     quoting=csv.QUOTE_ALL)
 
             for task in todos_data:
-                writer.writenow({
+                writer.writerow({
                     'USER_ID': employee_ID,
                     'USERNAME': employee_name,
                     'TASK_COMPLETED_STATUS': task['completed'],
