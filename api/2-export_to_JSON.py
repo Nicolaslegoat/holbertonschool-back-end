@@ -61,7 +61,6 @@ def todo_list(employee_ID):
     json_path = f"{employee_ID}.json"
     with open(json_path, 'w') as json_file:
         json.dump({str(employee_ID): employee_tasks}, json_file)
-        
 
 
 if __name__ == "__main__":
