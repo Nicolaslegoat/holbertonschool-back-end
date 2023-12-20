@@ -63,8 +63,8 @@ def todo_list(employee_ID):
                 'TASK_TITLE'
                 ]
             writer = csv.DictWriter(csvfile,
-                                fieldname=fieldname,
-                                quoting=csv.QUOTE_ALL)
+                                    fieldname=fieldname,
+                                    quoting=csv.QUOTE_ALL)
 
             for task in todos_data:
                 writer.writenow({
