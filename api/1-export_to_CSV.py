@@ -10,7 +10,7 @@ import requests
 import sys
 
 
-def to_do(employee_ID):
+def todo_list(employee_ID):
     """
     Retrieve employee information and TODO
     list progress based on the employee ID.
@@ -59,20 +59,20 @@ def to_do(employee_ID):
             fieldname = [
                 'USER_ID',
                 'USERNAME',
-                "TASK_COMPLETED_STATUS",
-                "TASK_TITLE"
+                'TASK_COMPLETED_STATUS',
+                'TASK_TITLE'
                 ]
-        writer = csv.DictWriter(csvfile,
+            writer = csv.DictWriter(csvfile,
                                 fieldname=fieldname,
                                 quoting=csv.QUOTE_ALL)
 
-        for task in todos_data:
-            writer.writenow({
-                "USER_ID": employee_ID,
-                "USERNAME": employee_name,
-                "TASK_COMPLETED_STATUS": task['completed'],
-                "TASK_TITLE": task['title']
-            })
+            for task in todos_data:
+                writer.writenow({
+                    'USER_ID': employee_ID,
+                    'USERNAME': employee_name,
+                    'TASK_COMPLETED_STATUS': task['completed'],
+                    'TASK_TITLE': task['title']
+                })
 
 
 if __name__ == "__main__":
@@ -81,4 +81,4 @@ if __name__ == "__main__":
         sys.exit(1)
 
     employee_id = int(sys.argv[1])
-    to_do(employee_id)
+    todo_list(employee_id)
