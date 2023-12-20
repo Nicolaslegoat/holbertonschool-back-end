@@ -17,51 +17,51 @@ def to_do(employee_ID):
     Args:
         employee_ID (int): The ID of the employee.
 
-    Return:
+    Returns:
         None
 
     Prints:
         Displays the employee's TODO list progress.
     """
-    base_url = 'https://jsonplaceholder.typicode.com'
+    url = 'https://jsonplaceholder.typicode.com'
 
-    # URLs for employees and todos
-    employee_url = f"{base_url}/users/{employee_id}"
-    todos_url = f"{base_url}/todos?userId={employee_id}"
+    # url for employess and todos
+    employee_url = f"{url}/users/{employee_ID}"
+    todos_url = f"{url}/todos?userId={employee_ID}"
 
-    # Request to get employee data
+    # request to get employee url
     employee_response = requests.get(employee_url)
 
-    # Verify that the request was successful
-    if employee_response.status_code != 200:
-        print(f"Error fetching employee data. Status Code: {employee_response.status_code}")
-        sys.exit(1)
-
-    # Convert employee data to JSON format
+    # converting to json format
     employee_data = employee_response.json()
 
-    # Get employee name
-    employee_name = employee_data.get('name')
+    # verifying that request is a success
+    if employee_response.status_code == 200:
+        # get the employee's name
+        employee_name = employee_data.get('name')
 
-    # Request to get TODOs data
+    # getting todos url.
     todos_response = requests.get(todos_url)
 
-    # Verify that the request was successful
-    if todos_response.status_code != 200:
-        print(f"Error fetching TODOs data. Status Code: {todos_response.status_code}")
-        sys.exit(1)
-
-    # Convert TODOs data to JSON format
+    # converting into json format
     todos_data = todos_response.json()
 
-    # Print the progress of the employee's TODO list
-    print(f"Employee {employee_name} is done with tasks:")
-
-    # Print the titles of completed tasks with formatting
+    # verifying if request was a success
+    if todos_response.status_code == 200:
+        # gettin total number of tasks in todos
+        total_tasks = len(todos_data)
+        # variable to be incremented if task is completed
+        completed_tasks = 0
+    # a loop that increment completed_tasks
     for task in todos_data:
-        task_title = task['title']
-        task_formatted = f"Task {task['id']} Formatting: OK"
-        print(f"{task_formatted:<40} {task_title}")
+        completed_tasks += task['completed']
+
+    print("Employee {} is done with tasks({}/{}):"
+          .format(employee_name, completed_tasks, total_tasks))
+
+    for task in todos_data:
+        if task['completed']:
+            print("\t {}".format(task['title']))
 
 
 if __name__ == "__main__":
